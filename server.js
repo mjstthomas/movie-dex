@@ -8,7 +8,8 @@ const app = express()
 const movies = require('./movies-data.json')
 
 app.use(helmet())
-app.use(morgan('dev'))
+const morganSetting = process.env.NODE_ENV === 'production' ? 'tiny' : 'common'
+app.use(morgan(morganSetting))
 app.use(cors())
 
 app.use(function validateBearerToken(req, res, next){
@@ -41,6 +42,8 @@ app.get('/movies', (req, res)=>{
 
 })
 
-app.listen(8000, ()=>{
+const PORT = process.env.PORT || 8000
+
+app.listen(PORT, ()=>{
 	console.log('listening!')
 })
